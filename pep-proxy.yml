@@ -1,0 +1,35 @@
+version: "3.5"
+services:
+  # PEP Proxy for Orion
+  orion-proxy:
+    build:
+      context: https://github.com/FIWARE-Blockchain/fiware-pep-proxy.git
+    container_name: fiware-pep-proxy-extended
+    hostname: orion-proxy
+    deploy:
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "1027:1027" # localhost:1027
+    expose:
+      - "1027"
+    environment:
+      - DEBUG=pep-proxy:*
+      - PEP_PROXY_DEBUG=true
+      - PEP_PROXY_APP_HOST=46.17.108.86
+      - PEP_PROXY_APP_PORT=1026
+      - PEP_PROXY_PORT=1027
+      - PEP_PROXY_IDM_HOST=46.17.108.86
+      - PEP_PROXY_HTTPS_ENABLED=false
+      - PEP_PROXY_AUTH_ENABLED=false
+      - PEP_PROXY_IDM_SSL_ENABLED=false
+      - PEP_PROXY_IDM_PORT=3005
+      - PEP_PROXY_APP_ID=39fe1ee0-4dc9-4bac-9f03-f8dc92f51382
+      - PEP_PROXY_USERNAME=pep_proxy_31ccd0db-0c2b-4c15-a394-21e8d8543491
+      - PEP_PASSWORD=pep_proxy_bd7c5ef5-4bdb-468c-a874-ff1f0b8d3d95
+      - PEP_PROXY_PDP=idm
+      - PEP_PROXY_MAGIC_KEY=1234
+      - PEP_PROXY_PUBLIC_PATHS=/version
+      - CANIS_MAJOR_URL=http://46.17.108.72:4000
+    healthcheck:
+      interval: 50s

@@ -1,0 +1,65 @@
+version: '3.5'
+services:
+    canismajor:
+        build:
+          context: https://github.com/FIWARE-Blockchain/CanisMajor.git
+        container_name: fiware-canismajor
+        hostname: canismajor
+        depends_on:
+            - mysql-db
+        ports:
+            - '4000:4000'
+        networks:
+            default:
+                ipv4_address: 172.18.1.5
+
+        environment:
+            - NODE_ENV=development
+            - CM_PORT=4000
+            - DB_HOST=mysql-db
+            - DB_NAME=cm
+            - DB_USERNAME=root
+            - DB_PASSWORD=secret
+            - DLT_TYPE=eth
+            - RPC_ENDPOINT=http://46.17.108.87:8545
+            - DEFAULT_GAS=3000000
+            - AEI_CONTRACT_MODE=true
+            - CONTRACT_ADDRESS=0x9a3DBCa554e9f6b9257aAa24010DA8377C57c17e
+            - STORAGE_TYPE=ipfs
+            - IPFS_HOST=ipfs.infura.io
+            - IPFS_PORT=5001
+            - IPFS_PROTOCOL=https
+            - IOTAMAM_HOST=https://nodes.devnet.iota.org
+            - IOTAMAM_MODE=public
+
+
+    mysql-db:
+        restart: always
+        image: mysql:5.7
+        hostname: mysql-db
+        container_name: db-mysql
+        expose:
+            - '3306'
+        ports:
+            - '3306:3306'
+        networks:
+            default:
+                ipv4_address: 172.18.1.6
+        environment:
+            # Development use only
+            # Use Docker Secrets for Sensitive Data
+            - 'MYSQL_ROOT_PASSWORD=secret'
+            - "MYSQL_ROOT_HOST=172.18.1.5" # Allow Keyrock to access this database
+
+        volumes:
+            - mysql-db:/var/lib/mysql
+            - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+
+networks:
+    default:
+      ipam:
+        config:
+          - subnet: 172.18.1.0/24
+
+volumes:
+    mysql-db: ~
