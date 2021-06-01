@@ -57,7 +57,17 @@ this will run the following service:
 2. Apache NIFI
 
 
-## 5. Running Canis Major
+## 5. Running TestRPC Network (Blockchain) (you can use quorum network as well as described below)
+```sh 
+docker-compose -f testrpc up
+```
+this will run the following service:
+
+1. TESTRPC
+2. deploy the AEI Contract
+
+
+## 6. Running Canis Major (take the Contract address from the above deployed service)
 ```sh 
 docker-compose -f canis-major up
 ```
