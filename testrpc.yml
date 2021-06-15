@@ -29,6 +29,3 @@ services:
                 #0xa96feB064c1b5AC996D17e8Ec1Ee635B40f131B4
         volumes:
             - ./ganache_data:/ganache_data
-
-volumes:
-    mysql-db: ~
